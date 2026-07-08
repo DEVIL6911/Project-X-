@@ -1,0 +1,14 @@
+# JARVIS Buddy Robot — Python Dependencies
+# Install: pip install -r requirements.txt
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+sqlalchemy[asyncio]>=2.0.0
+aiosqlite>=0.20.0
+google-generativeai>=0.8.0
+faster-whisper>=1.0.0
+pyttsx3>=2.98
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+httpx>=0.27.0
+python-multipart>=0.0.9

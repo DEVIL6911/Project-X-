@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS Buddy Robot — Simulation Console</title>
+    <meta name="description" content="Interactive hardware simulation for the JARVIS Buddy Robot Embodied AI system">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ====== Top Bar ====== -->
+    <header id="top-bar">
+        <div class="top-bar-left">
+            <div class="logo-mark">J</div>
+            <h1>JARVIS <span class="text-accent">Simulation Console</span></h1>
+        </div>
+        <div class="top-bar-right">
+            <div id="connection-indicator" class="indicator offline">
+                <span class="dot"></span>
+                <span class="label">Disconnected</span>
+            </div>
+            <div id="backend-url-group">
+                <input type="text" id="backend-url" value="http://127.0.0.1:3000" placeholder="Backend URL" spellcheck="false">
+                <button id="btn-connect" class="btn-primary">Connect</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====== Main Layout ====== -->
+    <main id="app-main">
+        <!-- ---- Left Panel: Robot Room View ---- -->
+        <section id="panel-room" class="panel">
+            <div class="panel-header">
+                <h2>Simulation Room</h2>
+                <div class="panel-controls">
+                    <button id="btn-add-obstacle" class="btn-ghost" title="Add Obstacle">+ Obstacle</button>
+                    <button id="btn-clear-obstacles" class="btn-ghost" title="Clear All">Clear</button>
+                    <button id="btn-reset-robot" class="btn-ghost" title="Reset Robot Position">Reset</button>
+                </div>
+            </div>
+            <div id="room-container">
+                <canvas id="room-canvas" width="560" height="480"></canvas>
+                <div id="room-overlay">
+                    <span class="hint">Click to place obstacles • Drag to move them</span>
+                </div>
+            </div>
+            <div id="sensor-readout">
+                <div class="readout-item">
+                    <span class="readout-label">Front</span>
+                    <span id="readout-front" class="readout-value">--</span>
+                    <span class="readout-unit">cm</span>
+                </div>
+                <div class="readout-item">
+                    <span class="readout-label">Left IR</span>
+                    <span id="readout-left-ir" class="readout-value safe">CLEAR</span>
+                </div>
+                <div class="readout-item">
+                    <span class="readout-label">Right IR</span>
+                    <span id="readout-right-ir" class="readout-value safe">CLEAR</span>
+                </div>
+                <div class="readout-item">
+                    <span class="readout-label">Servo</span>
+                    <span id="readout-servo" class="readout-value">90°</span>
+                </div>
+                <div class="readout-item">
+                    <span class="readout-label">Speed</span>
+                    <span id="readout-speed" class="readout-value">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ---- Center Panel: Emotion Display ---- -->
+        <section id="panel-emotion" class="panel">
+            <div class="panel-header">
+                <h2>Emotion Display</h2>
+                <span id="emotion-label" class="emotion-tag">IDLE</span>
+            </div>
+            <div id="emotion-screen">
+                <canvas id="emotion-canvas" width="256" height="320"></canvas>
+            </div>
+
+            <!-- Manual emotion switcher for testing -->
+            <div id="emotion-grid">
+                <button class="emo-btn active" data-emotion="IDLE">😐 Idle</button>
+                <button class="emo-btn" data-emotion="HAPPY">😊 Happy</button>
+                <button class="emo-btn" data-emotion="SAD">😢 Sad</button>
+                <button class="emo-btn" data-emotion="THINKING">🤔 Think</button>
+                <button class="emo-btn" data-emotion="ALERT">⚠️ Alert</button>
+                <button class="emo-btn" data-emotion="LISTENING">🎤 Listen</button>
+                <button class="emo-btn" data-emotion="SLEEPING">😴 Sleep</button>
+                <button class="emo-btn" data-emotion="EXCITED">🤩 Excited</button>
+                <button class="emo-btn" data-emotion="CONFUSED">😕 Confused</button>
+                <button class="emo-btn" data-emotion="ANGRY">😡 Angry</button>
+                <button class="emo-btn" data-emotion="SHY">🙈 Shy</button>
+                <button class="emo-btn" data-emotion="LOVE">❤️ Love</button>
+                <button class="emo-btn" data-emotion="SURPRISED">😲 Surprise</button>
+                <button class="emo-btn" data-emotion="BORED">😒 Bored</button>
+            </div>
+        </section>
+
+        <!-- ---- Right Panel: Chat & Controls ---- -->
+        <section id="panel-chat" class="panel">
+            <div class="panel-header">
+                <h2>Interaction Console</h2>
+                <button id="btn-clear-chat" class="btn-ghost">Clear Log</button>
+            </div>
+            <div id="chat-log">
+                <div class="chat-entry system">
+                    <span class="chat-time">--:--</span>
+                    <span class="chat-msg">JARVIS Simulation Console ready. Connect to backend to begin.</span>
+                </div>
+            </div>
+            <div id="chat-input-area">
+                <div id="mic-controls">
+                    <button id="btn-mic" class="btn-mic" title="Hold to record audio">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </button>
+                    <span id="mic-status">Click mic or type below</span>
+                </div>
+                <div id="text-input-row">
+                    <input type="text" id="text-input" placeholder="Type a message to JARVIS..." spellcheck="false">
+                    <button id="btn-send" class="btn-primary">Send</button>
+                </div>
+            </div>
+
+            <!-- Motor Controls -->
+            <div id="motor-controls">
+                <h3>Manual Motor Control</h3>
+                <div class="dpad">
+                    <button id="btn-forward" class="dpad-btn dpad-up" title="Forward">▲</button>
+                    <button id="btn-left" class="dpad-btn dpad-left" title="Turn Left">◄</button>
+                    <button id="btn-stop" class="dpad-btn dpad-center" title="Stop">■</button>
+                    <button id="btn-right" class="dpad-btn dpad-right" title="Turn Right">►</button>
+                    <button id="btn-backward" class="dpad-btn dpad-down" title="Backward">▼</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ====== Bottom Status Bar ====== -->
+    <footer id="status-bar">
+        <div class="status-item">
+            <span class="status-label">LLM</span>
+            <span id="status-llm" class="status-value">--</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Whisper</span>
+            <span id="status-whisper" class="status-value">--</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Processing</span>
+            <span id="status-processing" class="status-value">No</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Actions Queued</span>
+            <span id="status-actions" class="status-value">0</span>
+        </div>
+        <div class="status-item">
+            <span class="status-label">Telemetry Rate</span>
+            <span id="status-telem-rate" class="status-value">-- Hz</span>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

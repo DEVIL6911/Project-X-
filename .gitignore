@@ -1,0 +1,65 @@
+# ========================
+# Node / Vite (simulator-react)
+# ========================
+node_modules/
+dist/
+.vite/
+
+# ========================
+# Python (backend)
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+.venv/
+venv/
+env/
+.env
+
+# ========================
+# SQLite databases
+# ========================
+*.db
+*.sqlite3
+
+# ========================
+# C++ / Arduino (firmware)
+# ========================
+*.o
+*.obj
+*.elf
+*.hex
+*.bin
+*.map
+*.d
+build/
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# ========================
+# IDE & Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========================
+# OS generated
+# ========================
+*.log
+*.tmp
+*.bak
+
+# ========================
+# Misc
+# ========================
+.cache/
+.parcel-cache/

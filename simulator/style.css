@@ -1,0 +1,733 @@
+/*
+ * JARVIS Buddy Robot — Simulator Stylesheet
+ * ==========================================
+ * Premium dark theme with glassmorphism, modern typography,
+ * and micro-animations for an immersive simulation experience.
+ *
+ * Depth rule: Interactive/primary elements use larger sizes (z=0 feel).
+ * Background/secondary elements are muted and smaller (z=-5 feel).
+ */
+
+/* ========================================================================
+   CSS Custom Properties — Design Tokens
+   ======================================================================== */
+:root {
+    /* Core palette — deep space dark theme */
+    --bg-base:        hsl(225, 25%, 6%);
+    --bg-surface:     hsl(225, 20%, 10%);
+    --bg-elevated:    hsl(225, 18%, 14%);
+    --bg-glass:       hsla(225, 20%, 15%, 0.65);
+
+    /* Text hierarchy */
+    --text-primary:   hsl(210, 30%, 92%);
+    --text-secondary: hsl(215, 15%, 55%);
+    --text-muted:     hsl(215, 12%, 38%);
+
+    /* Accent palette — electric cyan to deep blue */
+    --accent:         hsl(195, 90%, 55%);
+    --accent-soft:    hsl(195, 80%, 40%);
+    --accent-glow:    hsla(195, 100%, 55%, 0.3);
+    --accent-surface: hsla(195, 100%, 55%, 0.08);
+
+    /* Status colors */
+    --success:        hsl(145, 65%, 48%);
+    --warning:        hsl(38, 90%, 55%);
+    --danger:         hsl(0, 72%, 55%);
+
+    /* Borders */
+    --border:         hsla(215, 15%, 30%, 0.5);
+    --border-glow:    hsla(195, 100%, 55%, 0.2);
+
+    /* Spacing */
+    --gap-xs:  4px;
+    --gap-sm:  8px;
+    --gap-md:  16px;
+    --gap-lg:  24px;
+    --gap-xl:  32px;
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+
+    /* Transitions */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration: 0.25s;
+
+    /* Typography */
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Cascadia Code', monospace;
+}
+
+
+/* ========================================================================
+   Reset & Base
+   ======================================================================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+::selection {
+    background: var(--accent-soft);
+    color: var(--text-primary);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+
+/* ========================================================================
+   Top Bar
+   ======================================================================== */
+#top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gap-sm) var(--gap-lg);
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    height: 56px;
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+}
+
+.logo-mark {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent), hsl(220, 80%, 55%));
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+#top-bar h1 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+}
+
+.text-accent {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.top-bar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-lg);
+}
+
+/* Connection indicator */
+.indicator {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.indicator .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: background var(--duration) var(--ease-out);
+}
+
+.indicator.offline .dot { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+.indicator.online .dot  { background: var(--success); box-shadow: 0 0 8px var(--success); animation: pulse-dot 2s infinite; }
+.indicator.offline .label { color: var(--danger); }
+.indicator.online .label  { color: var(--success); }
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+#backend-url-group {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+}
+
+#backend-url {
+    width: 220px;
+    padding: 6px 12px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    outline: none;
+    transition: border-color var(--duration) var(--ease-out);
+}
+
+#backend-url:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+
+/* ========================================================================
+   Buttons
+   ======================================================================== */
+.btn-primary {
+    padding: 6px 16px;
+    background: linear-gradient(135deg, var(--accent), hsl(210, 80%, 50%));
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease-out);
+    box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-ghost {
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease-out);
+}
+
+.btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-surface);
+}
+
+
+/* ========================================================================
+   Main Layout — 3-panel with resizable feel
+   ======================================================================== */
+#app-main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 320px 1fr;
+    gap: 1px;
+    background: var(--border);
+    overflow: hidden;
+    min-height: 0;
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-base);
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--gap-sm) var(--gap-md);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.panel-header h2 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.panel-controls {
+    display: flex;
+    gap: var(--gap-xs);
+}
+
+
+/* ========================================================================
+   Room Panel (Left)
+   ======================================================================== */
+#room-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--gap-md);
+    min-height: 0;
+}
+
+#room-canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: hsl(225, 25%, 8%);
+    cursor: crosshair;
+}
+
+#room-overlay {
+    position: absolute;
+    bottom: var(--gap-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+#room-overlay .hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+#sensor-readout {
+    display: flex;
+    justify-content: space-around;
+    padding: var(--gap-sm) var(--gap-md);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.readout-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.readout-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.readout-value {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.readout-value.safe { color: var(--success); }
+.readout-value.danger { color: var(--danger); }
+
+.readout-unit {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+
+/* ========================================================================
+   Emotion Panel (Center)
+   ======================================================================== */
+#panel-emotion {
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+}
+
+.emotion-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--accent-surface);
+    color: var(--accent);
+    border: 1px solid var(--border-glow);
+}
+
+#emotion-screen {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--gap-md);
+    background: radial-gradient(ellipse at center, hsla(225, 20%, 12%, 1) 0%, var(--bg-base) 100%);
+    min-height: 0;
+}
+
+#emotion-canvas {
+    width: 256px;
+    height: 320px;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border);
+    box-shadow: 0 0 40px hsla(195, 100%, 50%, 0.08), inset 0 0 30px hsla(0, 0%, 0%, 0.3);
+    image-rendering: pixelated;
+}
+
+#emotion-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3px;
+    padding: var(--gap-sm);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.emo-btn {
+    padding: 5px 2px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 10px;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease-out);
+    font-family: var(--font-body);
+}
+
+.emo-btn:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    background: var(--accent-surface);
+    transform: translateY(-1px);
+}
+
+.emo-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-surface);
+    color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+
+/* ========================================================================
+   Chat Panel (Right)
+   ======================================================================== */
+#chat-log {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--gap-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+    min-height: 0;
+}
+
+.chat-entry {
+    display: flex;
+    gap: var(--gap-sm);
+    font-size: 13px;
+    line-height: 1.6;
+    animation: chat-in 0.3s var(--ease-out);
+}
+
+@keyframes chat-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.chat-time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    min-width: 42px;
+}
+
+.chat-msg {
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.chat-entry.system .chat-msg {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.chat-entry.user .chat-msg {
+    color: var(--accent);
+}
+
+.chat-entry.jarvis .chat-msg {
+    color: var(--success);
+}
+
+.chat-entry.error .chat-msg {
+    color: var(--danger);
+}
+
+.chat-entry.thought .chat-msg {
+    color: var(--warning);
+    font-size: 11px;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* Input area */
+#chat-input-area {
+    padding: var(--gap-md);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+#mic-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    margin-bottom: var(--gap-sm);
+}
+
+.btn-mic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-elevated);
+    border: 2px solid var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--duration) var(--ease-out);
+}
+
+.btn-mic:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.btn-mic.recording {
+    border-color: var(--danger);
+    background: hsla(0, 72%, 55%, 0.15);
+    color: var(--danger);
+    animation: mic-pulse 1s infinite;
+}
+
+@keyframes mic-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsla(0, 72%, 55%, 0.4); }
+    50% { box-shadow: 0 0 0 12px hsla(0, 72%, 55%, 0); }
+}
+
+#mic-status {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+#text-input-row {
+    display: flex;
+    gap: var(--gap-xs);
+}
+
+#text-input {
+    flex: 1;
+    padding: 8px 14px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 13px;
+    outline: none;
+    transition: border-color var(--duration) var(--ease-out);
+}
+
+#text-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#text-input::placeholder {
+    color: var(--text-muted);
+}
+
+
+/* ========================================================================
+   Motor Controls — D-Pad
+   ======================================================================== */
+#motor-controls {
+    padding: var(--gap-md);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+#motor-controls h3 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: var(--gap-sm);
+    text-align: center;
+}
+
+.dpad {
+    display: grid;
+    grid-template-areas:
+        ".     up    ."
+        "left  center right"
+        ".     down  .";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 4px;
+    max-width: 160px;
+    margin: 0 auto;
+}
+
+.dpad-btn {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.15s var(--ease-out);
+    user-select: none;
+}
+
+.dpad-up     { grid-area: up; }
+.dpad-left   { grid-area: left; }
+.dpad-center { grid-area: center; background: var(--danger); border-color: var(--danger); color: white; font-size: 12px; }
+.dpad-right  { grid-area: right; }
+.dpad-down   { grid-area: down; }
+
+.dpad-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-surface);
+}
+
+.dpad-btn:active {
+    transform: scale(0.92);
+    background: var(--accent);
+    color: white;
+}
+
+.dpad-center:hover {
+    background: hsl(0, 80%, 45%);
+}
+
+
+/* ========================================================================
+   Status Bar (Bottom)
+   ======================================================================== */
+#status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: var(--gap-xs) var(--gap-lg);
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border);
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+}
+
+.status-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.status-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+
+/* ========================================================================
+   Responsive: Collapse to vertical on narrow screens
+   ======================================================================== */
+@media (max-width: 1100px) {
+    #app-main {
+        grid-template-columns: 1fr 260px;
+        grid-template-rows: 1fr 1fr;
+    }
+    #panel-room {
+        grid-row: 1 / 3;
+    }
+    #panel-emotion {
+        border-left: 1px solid var(--border);
+        border-right: none;
+    }
+    #panel-chat {
+        border-top: 1px solid var(--border);
+    }
+}
+
+@media (max-width: 768px) {
+    #app-main {
+        grid-template-columns: 1fr;
+        grid-template-rows: 300px 200px 1fr;
+    }
+    #panel-emotion {
+        border-left: none;
+    }
+    #emotion-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+}
